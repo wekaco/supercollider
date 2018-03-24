@@ -25,9 +25,13 @@ cache:
  - ccache
 
 before_install:
+ - cat /proc/self/fdinfo/1
+ - cat /proc/self/fdinfo/2
  - $TRAVIS_BUILD_DIR/.travis/before-install-$TRAVIS_OS_NAME.sh --qt=$QT
 
 before_script:
+ - cat /proc/self/fdinfo/1
+ - cat /proc/self/fdinfo/2
  - mkdir BUILD && cd BUILD
 
  - $TRAVIS_BUILD_DIR/.travis/before-script-$TRAVIS_OS_NAME.sh --qt=$QT
@@ -35,11 +39,15 @@ before_script:
  - if [[ $QT == true ]]; then $TRAVIS_BUILD_DIR/.travis/qpm-prep.sh; fi
 
 script:
+ - cat /proc/self/fdinfo/1
+ - cat /proc/self/fdinfo/2
  - $TRAVIS_BUILD_DIR/.travis/script-$TRAVIS_OS_NAME.sh
  - $TRAVIS_BUILD_DIR/.travis/test.sh
  - if [[ $TRAVIS_OS_NAME == osx ]]; then $TRAVIS_BUILD_DIR/.travis/package-osx.sh; fi
 
 before_deploy:
+ - cat /proc/self/fdinfo/1
+ - cat /proc/self/fdinfo/2
  # required for github releases
  - git fetch --tags
  - export BUILD_PREFIX=$TRAVIS_REPO_SLUG/$TRAVIS_OS_NAME
