@@ -553,19 +553,45 @@ inline T sc_scaleneg(T a, T b)
 		return a;
 }
 
+// Via benchmarking, the version using signbit is faster with VS 2017.
+// For gcc-7 the copysign version was faster.
+// Clang is able to generate great assembly for the naive version, so no specialization is provided.
+// For benchmarking code see https://gist.github.com/405ddbd01daddc91de3ed0b7d1db0195
+#ifdef _MSC_VER
+
 template <>
 inline float sc_scaleneg<float>(float a, float b)
 {
-	b = 0.5f * b + 0.5f;
-	return (std::abs(a) - a) * b + a;
+	int c = std::signbit(a);
+	return (a * b * c) + (a * (1.0f - c));
 }
 
 template <>
 inline double sc_scaleneg<double>(double a, double b)
 {
-	b = 0.5 * b + 0.5;
-	return (std::abs(a) - a) * b + a;
+	int c = std::signbit(a);
+	return (a * b * c) + (a * (1.0f - c));
 }
+
+#elif !defined(__clang__) // not MSVC or Clang
+
+template <>
+inline float sc_scaleneg<float>(float a, float b)
+{
+	float c = std::copysign(1.0f, a);
+	c = (c + 1.0f) * 0.5f;
+	return (a * b * (1.0f - c)) + (a * c);
+}
+
+template <>
+inline double sc_scaleneg<double>(double a, double b)
+{
+	double c = std::copysign(1.0, a);
+	c = (c + 1) * 0.5;
+	return (a * b * (1.0 - c)) + (a * c);
+}
+
+#endif // _MSC_VER
 
 template <typename T>
 inline T sc_amclip(T a, T b)
