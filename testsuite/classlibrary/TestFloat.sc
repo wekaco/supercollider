@@ -1,5 +1,7 @@
 TestFloat : UnitTest {
 
+	// ----------- storeOn ---------------------------------------------------------------------
+
 	test_storeOn {
 		var stored;
 		stored = String.streamContents({ arg stream; stream <<< 1e-05});
@@ -13,6 +15,8 @@ TestFloat : UnitTest {
 		this.assertEquals(stored ,  "2", "2 should be stored as 2");
 
 	}
+
+	// ----------- asString ---------------------------------------------------------------------
 
 	test_asString_zero {
 		this.assertEquals(0.0.asString, "0.0")
@@ -48,6 +52,62 @@ TestFloat : UnitTest {
 
 	test_asString_largeNumberUsesExp {
 		this.assertEquals((1e26).asString, "1e+26")
+	}
+
+	// ----------- scaleneg ---------------------------------------------------------------------
+
+	// basic tests
+	test_scaleneg_positiveA_positiveB {
+		this.assertEquals(scaleneg(1.0, 2.0), 1.0)
+	}
+
+	test_scaleneg_zeroA_positiveB {
+		this.assertEquals(scaleneg(0.0, 2.0), 0.0)
+	}
+
+	test_scaleneg_negativeA_positiveB {
+		this.assertEquals(scaleneg(-1.0, 2.0), -2.0)
+	}
+
+	test_scaleneg_negativeA_negativeB {
+		this.assertEquals(scaleneg(-1.0, -2.0), 2.0)
+	}
+
+	// non-numbers
+	test_scaleneg_posInfA_positiveB {
+		this.assertEquals(scaleneg(inf, 2.0), inf)
+	}
+
+	test_scaleneg_negInfA_positiveB {
+		this.assertEquals(scaleneg(-inf, 2.0), -inf)
+	}
+
+	test_scaleneg_NaNA_positiveB {
+		this.assert(scaleneg(0/0, 2.0).isNaN)
+	}
+
+	test_scaleneg_positiveA_infB {
+		this.assertEquals(scaleneg(1.0, inf), 1.0)
+	}
+
+	test_scaleneg_zeroA_infB {
+		this.assertEquals(scaleneg(0.0, inf), 0.0)
+	}
+
+	test_scaleneg_negativeA_infB {
+		this.assertEquals(scaleneg(-1.0, inf), -inf)
+	}
+
+	test_scaleneg_positiveA_NaNB {
+		this.assertEquals(scaleneg(1.0, 0/0), 1.0)
+	}
+
+	test_scaleneg_zeroA_NaNB {
+		this.assertEquals(scaleneg(0.0, 0/0), 0.0)
+	}
+
+	test_scaleneg_negativeA_NaNB {
+		this.assert(scaleneg(-1.0, 0/0).isNaN)
 	}
 
 }
