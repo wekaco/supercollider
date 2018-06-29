@@ -57,19 +57,19 @@ NamedControl {
 	var <control;
 
 	*ar { arg  name, values, lags, spec;
-		^this.newSpec(name, values, \audio, lags, false, spec)
+		^this.new(name, values, \audio, lags, false, spec)
 	}
 
 	*kr { arg  name, values, lags, fixedLag = false, spec;
-		^this.newSpec(name, values, \control, lags, fixedLag, spec)
+		^this.new(name, values, \control, lags, fixedLag, spec)
 	}
 
 	*ir { arg  name, values, lags, spec;
-		^this.newSpec(name, values, \scalar, lags, false, spec)
+		^this.new(name, values, \scalar, lags, false, spec)
 	}
 
 	*tr { arg  name, values, lags, spec;
-		^this.newSpec(name, values, \trigger, lags, false, spec)
+		^this.new(name, values, \trigger, lags, false, spec)
 	}
 
 	*new { arg name, values, rate, lags, fixedLag = false, spec;
@@ -132,11 +132,6 @@ NamedControl {
 		} {
 			res.control
 		}
-	}
-
-	*newSpec { arg name, values, rate, lags, fixedLag = false, spec;
-		this.initDict;
-
 	}
 
 	init {
