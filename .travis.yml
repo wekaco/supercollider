@@ -25,6 +25,7 @@ cache:
  - ccache
 
 before_install:
+ - export BREW_NO_AUTO_UPDATE=1
  - $TRAVIS_BUILD_DIR/.travis/before-install-$TRAVIS_OS_NAME.sh --qt=$QT
 
 before_script:
