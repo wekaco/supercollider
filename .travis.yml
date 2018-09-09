@@ -15,7 +15,9 @@ matrix:
       group: edge
     - os: osx
       osx_image: xcode8.3
-      env: QT=true
+      env:
+        - QT=true
+        - HOMEBREW_NO_AUTO_UPDATE=1
 
 # use ccache to speed up build times. on osx,
 # we install it during the the before_install step
@@ -25,7 +27,6 @@ cache:
  - ccache
 
 before_install:
- - export BREW_NO_AUTO_UPDATE=1
  - $TRAVIS_BUILD_DIR/.travis/before-install-$TRAVIS_OS_NAME.sh --qt=$QT
 
 before_script:
