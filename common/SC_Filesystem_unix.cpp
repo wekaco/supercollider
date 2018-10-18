@@ -59,7 +59,7 @@ struct SC_Filesystem::Glob
 SC_Filesystem::Glob* SC_Filesystem::makeGlob(const char* pattern)
 {
 	Glob* glob = new Glob;
-	const int flags = GLOB_MARK | GLOB_TILDE;
+	const int flags = GLOB_MARK;
 	const int err = ::glob(pattern, flags, nullptr, &glob->mHandle);
 	if (err < 0) {
 		delete glob;
