@@ -165,17 +165,6 @@ void SC_LanguageClient::setCmdLine(const char* str)
 	setCmdLine(str, strlen(str));
 }
 
-void SC_LanguageClient::setCmdLinef(const char* fmt, ...)
-{
-	SC_StringBuffer & scratch = mHiddenClient->mScratch;
-	va_list ap;
-	va_start(ap, fmt);
-	scratch.reset();
-	scratch.vappendf(fmt, ap);
-	va_end(ap);
-	setCmdLine(scratch.getData());
-}
-
 void SC_LanguageClient::runLibrary(PyrSymbol* symbol)
 {
 	lock();
@@ -201,7 +190,8 @@ void SC_LanguageClient::executeFile(const char* fileName)
 		++i;
 	}
 
-	setCmdLinef("thisProcess.interpreter.executeFile(\"%s\")", escaped_file_name.c_str());
+	setCmdLine("thisProcess.interpreter.executeFile..");
+        setCmdLine(escaped_file_name.c_str());
 	runLibrary(s_interpretCmdLine);
 }
 

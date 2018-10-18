@@ -72,42 +72,6 @@ void SC_StringBuffer::append(const char* str)
 	append(str, strlen(str));
 }
 
-void SC_StringBuffer::vappendf(const char* fmt, va_list ap)
-{
-	va_list ap2;
-	size_t remaining = getRemaining();
-
-	// Calling vsnprintf may invalidate vargs, so keep a copy
-#ifdef __va_copy
-	__va_copy(ap2, ap);
-#else
-	ap2 = ap;
-#endif
-
-	// NOTE: This only works since glibc 2.0.6!
-	int size = vsnprintf(mPtr, remaining, fmt, ap);
-	va_end(ap);
-
-	// size returned excludes trailing \0
-	if (size++ > 0) {
-		if ((size_t)size > remaining) {
-			growBy(size - remaining);
-			vsnprintf(mPtr, size, fmt, ap2);
-		}
-		mPtr += size-1; // omit trailing \0
-	}
-
-	va_end(ap2);
-}
-
-void SC_StringBuffer::appendf(const char* fmt, ...)
-{
-	va_list ap;
-	va_start(ap, fmt);
-	vappendf(fmt, ap);
-	va_end(ap);
-}
-
 void SC_StringBuffer::growBy(size_t request)
 {
 	size_t oldSize = getSize();

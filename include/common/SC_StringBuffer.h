@@ -46,8 +46,6 @@ public:
 	void append(const char* src, size_t len);
 	void append(char c);
 	void append(const char* str);
-	void vappendf(const char* fmt, va_list vargs);
-	void appendf(const char* fmt, ...);
 
 protected:
 	enum {
